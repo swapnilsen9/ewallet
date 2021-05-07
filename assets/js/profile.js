@@ -1,7 +1,5 @@
 const instanceUrl = "https://e-wallet-testing.herokuapp.com";
 
-console.log(process.env.PORT);
-
 $(document).ready(doInit);
 
 $("#saveUserSettings").click(function (evt) {
