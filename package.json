@@ -6,7 +6,7 @@
     "npm": "7.x"
   },
   "description": "Server Side Code For E-Wallet Project",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
