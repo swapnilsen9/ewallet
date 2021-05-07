@@ -1,6 +1,4 @@
-const instanceUrl = "http://localhost:8000";
-
-console.log(process.env.PORT);
+const instanceUrl = window.location.origin;
 
 $(document).ready(doInit);
 

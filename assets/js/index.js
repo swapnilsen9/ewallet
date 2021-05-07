@@ -1,4 +1,4 @@
-const instanceUrl = "http://localhost:8000";
+const instanceUrl = window.location.origin;
 
 $(function () {
   $("form[name='userForm']").validate({
