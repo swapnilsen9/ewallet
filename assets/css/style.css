@@ -1,0 +1,7 @@
+.error {
+    color: #a90505;
+    font-size: 0.7rem;
+    position: relative;
+    line-height: 1px;
+    width: -webkit-fill-available;
+}
