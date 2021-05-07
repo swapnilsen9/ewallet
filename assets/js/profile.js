@@ -1,4 +1,4 @@
-const instanceUrl = "http://localhost:8000";
+const instanceUrl = "https://e-wallet-testing.herokuapp.com/";
 
 console.log(process.env.PORT);
 
