@@ -1,4 +1,4 @@
-const instanceUrl = "https://e-wallet-testing.herokuapp.com/";
+const instanceUrl = "https://e-wallet-testing.herokuapp.com";
 
 console.log(process.env.PORT);
 
