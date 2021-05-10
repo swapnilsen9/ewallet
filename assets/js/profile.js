@@ -153,3 +153,16 @@ $('.croppie-upload').on('click', function (ev) {
       .catch((err) => {});
   });
 });
+
+var control = document.getElementById("croppie-input");
+control.addEventListener("change", function(event) {
+    // When the control has changed, there are new files
+    var files = control.files;
+    for (var i = 0; i < files.length; i++) {
+        console.log(files[i].type);
+        if(files[i].type != 'image/jpeg' && files[i].type != 'image/png'){
+          alert('Please Upload Jpg/Png Image Files');
+          $('#croppie-input').val('');
+        }
+    }
+}, false);
