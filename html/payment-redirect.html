@@ -91,17 +91,9 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Dashboard</h3>
-                    </div>
-                </div>
-                <div class="card" style="margin-right: 37px;margin-left: 37px;border-radius: 20px;">
-                    <div class="card-body">
-                        <h4 class="card-title" style="border-radius: 0px;">Wallet Balance</h4><strong style="color: var(--danger);font-size: 54px;margin-left: 20px;">₹5,000<br></strong>
-                        <button class="btn btn-primary" type="button" style="margin-top: 6px;margin-right: 0px;margin-left: 16px;" data-toggle="modal" data-target="#addMoneyModal">Add Money</button>
-                        <button class="btn btn-primary" type="button" style="margin-left: 16px;margin-top: 6px;">Send Money</button>
-                        <button class="btn btn-primary" type="button" style="margin-left: 16px;margin-top: 6px;">Transfer To Bank</button>
-                    </div>
+                    <h1 class="text-dark mb-0" id="paymentStatus"></h1><br/><br/>
+                    <p class="text-dark mb-0" id="msg"></p><br/><br/>
+                    <button class="btn btn-primary" onclick="goHome()">Go Home</button>
                 </div>
             </div>
             <footer class="bg-white sticky-footer">
@@ -112,37 +104,11 @@
         </div><a class="border rounded scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="addMoneyModal" tabindex="-1" role="dialog" aria-labelledby="addMoneyModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add Money</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <label for="amount"><strong>Enter Amount</strong></label><br/>
-                    <input id="amount" type="number" placeholder="100" name="amount">
-                </div>
-                <div class="modal-footer">
-                    <!--Spinner-->
-                    <div class="spinner-border" role="status" id="spinner" style='display:none'>
-                        <span class="sr-only">Loading...</span>
-                    </div>   
-                    <button type="button" id="modalCloseBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addMoneyBtn">Add Money To Wallet</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="assets/js/script.min.js"></script>
-    <script src="assets/js/home.js"></script>
+    <script src="assets/js/payment-redirect.js"></script>
 </body>
 
 </html>

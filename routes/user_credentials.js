@@ -110,38 +110,98 @@ router
       });
   })
   .patch((req, res) => {
-    console.log(req.body);
-    var body = {};
-    if (req.body.username != null) body.username = req.body.username;
-    if (req.body.email != null) body.email = req.body.email;
-    if (req.body.fName != null) body.fName = req.body.fName;
-    if (req.body.lName != null) body.lName = req.body.lName;
-    if (req.body.address != null) body.address = req.body.address;
-    if (req.body.city != null) body.city = req.body.city;
-    if (req.body.country != null) body.country = req.body.country;
-    UserCredentials.findOneAndUpdate(
-      {
-        $or: [
-          { username: req.body.sessionUserName },
-          { email: req.body.sessionUserName },
-        ],
-      },
-      body,
-      { new: true }
-    )
-      .exec()
-      .then((result) => {
-        console.log(result);
-        if (result === null) {
-          res.status(404).json({ updated: false, message: "Record Not Found" });
-        } else {
-          res.status(200).json({ updated: true, updatedRecord: result });
+    if (req.body.username !== null && req.body.email !== null) {
+      UserCredentials.findOne(
+        { username: req.body.username },
+        null,
+        {
+          limit: 1,
         }
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
+      )
+        .exec()
+        .then((result) => {
+          if (result === null) {
+            var body = {};
+            if (req.body.username != null) body.username = req.body.username;
+            if (req.body.email != null) body.email = req.body.email;
+            if (req.body.fName != null) body.fName = req.body.fName;
+            if (req.body.lName != null) body.lName = req.body.lName;
+            if (req.body.address != null) body.address = req.body.address;
+            if (req.body.city != null) body.city = req.body.city;
+            if (req.body.country != null) body.country = req.body.country;
+            UserCredentials.findOneAndUpdate(
+              {
+                $or: [
+                  { username: req.body.sessionUserName },
+                  { email: req.body.sessionUserName },
+                ],
+              },
+              body,
+              { new: true }
+            )
+              .exec()
+              .then((result) => {
+                console.log(result);
+                if (result === null) {
+                  res
+                    .status(404)
+                    .json({ updated: false, message: "Record Not Found" });
+                } else {
+                  res
+                    .status(200)
+                    .json({ updated: true, updatedRecord: result });
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+                res.status(500).json(err);
+              });
+          } else {
+            res.status(400).json({
+              success: false,
+              message: "Username Already Exists!",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ error: err });
+        });
+    } else {
+      var body = {};
+      if (req.body.username != null) body.username = req.body.username;
+      if (req.body.email != null) body.email = req.body.email;
+      if (req.body.fName != null) body.fName = req.body.fName;
+      if (req.body.lName != null) body.lName = req.body.lName;
+      if (req.body.address != null) body.address = req.body.address;
+      if (req.body.city != null) body.city = req.body.city;
+      if (req.body.country != null) body.country = req.body.country;
+      UserCredentials.findOneAndUpdate(
+        {
+          $or: [
+            { username: req.body.sessionUserName },
+            { email: req.body.sessionUserName },
+          ],
+        },
+        body,
+        { new: true }
+      )
+        .exec()
+        .then((result) => {
+          console.log(result);
+          if (result === null) {
+            res
+              .status(404)
+              .json({ updated: false, message: "Record Not Found" });
+          } else {
+            res.status(200).json({ updated: true, updatedRecord: result });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json(err);
+        });
+    }
   });
 
 router.route("/authenticate").post((req, res) => {

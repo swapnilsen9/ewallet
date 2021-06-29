@@ -3,6 +3,7 @@ const cors = require("cors");
 const http = require("http");
 const mongoose = require("mongoose");
 const user_credentials = require('./routes/user_credentials');
+const payments = require('./routes/payments');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/', express.static('html'));
 app.use('/assets', express.static('assets'));
 app.use('/user_credentials', user_credentials);
+app.use('/payments', payments);
 
 mongoose.connect(
   "mongodb+srv://admin:admin@ewallet-cluster.fsj62.mongodb.net/e-wallet-database?retryWrites=true&w=majority",
