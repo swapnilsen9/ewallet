@@ -26,6 +26,7 @@ $(function () {
       })
       .catch((err) => {});
   }
+  updateWalletAmount();
 });
 
 $("#addMoneyBtn").click((evt) => {
@@ -79,4 +80,20 @@ $("#addMoneyBtn").click((evt) => {
 function logout() {
   localStorage.clear();
   location.href = "./index.html";
+}
+
+function updateWalletAmount(){
+  fetch(instanceUrl + "/user_wallet/wallet-balance/"+localStorage.getItem('userId'), {
+    method: "GET", // POST, PUT, DELETE, etc.
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (response.status == 200) {
+        response.json().then((data) => {
+          $('#walletBalance').html('₹'+data.amount+'<br>');
+        });
+      }
+    });
 }

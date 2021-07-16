@@ -66,7 +66,7 @@ router
                     _id: new mongoose.Types.ObjectId(),
                     userId: result._id,
                     Amount: 0,
-                    lastTxnId : null
+                    lastTxnId : 0
                   });
                   userWalletDetails.save().then((walletResult) => {
                     res.status(201).json({

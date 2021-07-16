@@ -54,6 +54,10 @@ $(function () {
                 );
               }
             });
+          }else if(userResponse.status == 400){
+            $("#paymentStatus").html(
+              "Duplicate Entry"
+            );
           }
         })
         .catch((err) => {
