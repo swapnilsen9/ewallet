@@ -20,6 +20,7 @@ router.route("/update-wallet/:userId").patch((req, res) => {
   })
     .exec()
     .then((result2) => {
+        console.log(result2);
         if(result2.lastTxnId != body.lastTxnId){
             UserWallet.findOneAndUpdate(
                 {
