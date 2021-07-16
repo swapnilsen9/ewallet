@@ -1,7 +1,7 @@
 const instanceUrl = window.location.origin;
 
 $(function () {
-  let sessionUserName = sessionStorage.getItem("userName");
+  let sessionUserName = localStorage.getItem("userName");
   if (sessionUserName === null) {
     location.href = "./404.html";
   } else {
@@ -26,6 +26,6 @@ $(function () {
 });
 
 function logout() {
-  sessionStorage.clear();
+  localStorage.clear();
   location.href = "./index.html";
 }

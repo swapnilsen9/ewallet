@@ -2,8 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const mongoose = require("mongoose");
-const user_credentials = require('./routes/user_credentials');
-const payments = require('./routes/payments');
+const user_credentials = require("./routes/user_credentials");
+const user_wallet = require("./routes/user_wallet");
+const payments = require("./routes/payments");
+
+const crypto = require("crypto");
+const fs = require("fs");
 
 const app = express();
 
@@ -16,12 +20,13 @@ server.on("error", onError);
 server.on("listening", onListening);
 
 app.use(cors());
-app.use(express.json({limit: '50mb'}));
-app.use('/uploads', express.static('uploads'));
-app.use('/', express.static('html'));
-app.use('/assets', express.static('assets'));
-app.use('/user_credentials', user_credentials);
-app.use('/payments', payments);
+app.use(express.json({ limit: "50mb" }));
+app.use("/uploads", express.static("uploads"));
+app.use("/", express.static("html"));
+app.use("/assets", express.static("assets"));
+app.use("/user_credentials", user_credentials);
+app.use("/user_wallet", user_wallet);
+app.use("/payments", payments);
 
 mongoose.connect(
   "mongodb+srv://admin:admin@ewallet-cluster.fsj62.mongodb.net/e-wallet-database?retryWrites=true&w=majority",
@@ -32,6 +37,10 @@ mongoose.connect(
     useFindAndModify: false,
   }
 );
+
+if (!fs.existsSync('./rsa-key/private.pem')) {
+  generatePublicKey();
+}
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
@@ -83,4 +92,24 @@ function onListening() {
   var addr = server.address();
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   console.log("Listening on " + bind);
+}
+
+function generatePublicKey() {
+  //var now = Math.floor(new Date() / 1000);
+  var dir = "rsa-key";
+  if (!fs.existsSync("./" + dir)) {
+    fs.mkdirSync(dir);
+  }
+
+  crypto.generateKeyPair(
+    "rsa",
+    { modulusLength: 2048 },
+    (err, publicKey, privateKey) => {
+      fs.writeFile(
+        dir + "/private.pem",
+        privateKey.export({ type: "pkcs1", format: "pem" }),
+        (err) => {}
+      );
+    }
+  );
 }

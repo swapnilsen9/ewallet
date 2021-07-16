@@ -87,7 +87,7 @@ router.route("/initiate").post((req, res) => {
 
 router.route('/payment_webhook').post((req, res) => {
   console.log(req.body);
-  res.redirect('/payment-redirect.html?status='+req.body.STATUS+'&msg='+req.body.RESPMSG+'&amt='+req.body.TXNAMOUNT);
+  res.redirect('/payment-redirect.html?status='+req.body.STATUS+'&msg='+req.body.RESPMSG+'&amt='+req.body.TXNAMOUNT+'&txnid='+req.body.TXNID);
 });
 
 module.exports = router;

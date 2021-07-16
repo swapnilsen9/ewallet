@@ -1,9 +1,10 @@
 const instanceUrl = window.location.origin;
+localStorage.setItem('reloadCount', 0)
 
 $(function () {
-  let sessionUserName = sessionStorage.getItem("userName");
+  let sessionUserName = localStorage.getItem("userName");
   if (sessionUserName === null) {
-    location.href = "./404.html";
+    //location.href = "./404.html";
   } else {
     fetch(instanceUrl + "/user_credentials/" + sessionUserName, {
       method: "GET", // POST, PUT, DELETE, etc.
@@ -30,15 +31,43 @@ $(function () {
     console.log(searchParams.get("status"));
     console.log(searchParams.get("msg"));
     console.log(searchParams.get("amt"));
+    console.log(searchParams.get("txnid"));
     if (searchParams.get("status") == "TXN_SUCCESS") {
-      $("#paymentStatus").html(
-        "Payment of Rs. " + searchParams.get("amt") + " was Successful!"
-      );
-      $("#msg").html(
-        "Rs. " +
-          searchParams.get("amt") +
-          " has been added to your wallet. You can check your wallet balance on the dashboard.<br/>Click The Button Below to go to the dashboard."
-      );
+      fetch(instanceUrl + "/user_wallet/" + localStorage.getItem('userId'), {
+        method: "PATCH", // POST, PUT, DELETE, etc.
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ amount : searchParams.get("amt"), lastTxnId : searchParams.get("txnid") }),
+      })
+        .then((userResponse) => {
+          if (userResponse.status == 200) {
+            userResponse.json().then((userDataJson) => {
+              if(userDataJson.updated === true){
+                $("#paymentStatus").html(
+                  "Payment of Rs. " + searchParams.get("amt") + " was Successful!"
+                );
+                $("#msg").html(
+                  "Rs. " +
+                    searchParams.get("amt") +
+                    " has been added to your wallet. You can check your wallet balance on the dashboard.<br/>Click The Button Below to go to the dashboard."
+                );
+              }
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          localStorage.setItem('reloadCount', localStorage.getItem('reloadCount') + 1);
+          if(localStorage.getItem('reloadCount') <= 3){
+            location.reload();
+          }else{
+            $("#paymentStatus").html(
+              "Payment of Rs. " + searchParams.get("amt") + " has Failed!"
+            );
+            $("#msg").html("Failure Reason: Server Failure");
+          }          
+        });
     } else if (searchParams.get("status") == "TXN_FAILURE") {
       $("#paymentStatus").html(
         "Payment of Rs. " + searchParams.get("amt") + " has Failed!"
@@ -49,10 +78,11 @@ $(function () {
 });
 
 function logout() {
-  sessionStorage.clear();
+  localStorage.clear();
   location.href = "./index.html";
 }
 
 function goHome(){
+  localStorage.setItem('reloadCount', 0)
   window.open(instanceUrl+'/home.html', '_self');
 }

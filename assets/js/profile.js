@@ -6,7 +6,7 @@ $("#saveUserSettings").click(function (evt) {
   evt.preventDefault();
   var body = {
     email: $("#emailId").val(),
-    sessionUserName: sessionStorage.getItem("userName"),
+    sessionUserName: localStorage.getItem("userName"),
     username: $("#userName").val(),
     fName: $("#firstName").val(),
     lName: $("#lastName").val(),
@@ -22,7 +22,7 @@ $("#saveUserSettings").click(function (evt) {
       if (response.status == 200) {
         response.json().then((data) => {
           if (data.updated === true) {
-            sessionStorage.setItem("userName", data.updatedRecord.username);
+            localStorage.setItem("userName", data.updatedRecord.username);
             doInit();
             alert("Saved Successfully!");
           }
@@ -39,7 +39,7 @@ $("#saveUserSettings").click(function (evt) {
 $("#saveContactSettings").click(function (evt) {
   evt.preventDefault();
   var body = {
-    sessionUserName: sessionStorage.getItem("userName"),
+    sessionUserName: localStorage.getItem("userName"),
     address: $("#address").val(),
     city: $("#city").val(),
     country: $("#country").val(),
@@ -69,7 +69,7 @@ $("#saveContactSettings").click(function (evt) {
 });
 
 function doInit() {
-  let sessionUserName = sessionStorage.getItem("userName");
+  let sessionUserName = localStorage.getItem("userName");
   if (sessionUserName === null) {
     location.href = "./404.html";
   } else {
@@ -105,7 +105,7 @@ function doInit() {
 }
 
 function logout() {
-  sessionStorage.clear();
+  localStorage.clear();
   location.href = "./index.html";
 }
 
@@ -142,7 +142,7 @@ $(".croppie-upload").on("click", function (ev) {
       var imageBlob = image.split(",");
       console.log(imageBlob[1]);
       var body = {
-        sessionUserName: sessionStorage.getItem("userName"),
+        sessionUserName: localStorage.getItem("userName"),
         profileImage: imageBlob[1],
       };
       fetch(instanceUrl + "/user_credentials/upload", {

@@ -43,8 +43,26 @@ function loginUser(userData) {
       if (response.status == 200) {
         response.json().then((data) => {
           if (data.success === true) {
-            sessionStorage.setItem('userName', userData[0].value);
-            location.href = "./home.html";
+            localStorage.setItem("userName", userData[0].value);
+            fetch(instanceUrl + "/user_credentials/" + userData[0].value, {
+              method: "GET", // POST, PUT, DELETE, etc.
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+              .then((userResponse) => {
+                if (userResponse.status == 200) {
+                  userResponse.json().then((userDataJson) => {
+                    localStorage.setItem("userId", userDataJson._id);
+                    location.href = "./home.html";
+                  });
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+                alert("Something Failed. Please Try Again.");
+                $(".user").trigger("reset");
+              });
           }
         });
       } else {

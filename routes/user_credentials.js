@@ -3,12 +3,16 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
+
+const privateKey = fs.readFileSync("./rsa-key/private.pem");
 
 const saltRounds = 10;
 
 let router = express.Router();
 
 const UserCredentials = require("../models/user_credentials");
+const UserWallet = require("../models/user_wallet");
 
 router.use(cors());
 router.use(express.json());
@@ -58,10 +62,18 @@ router
                 .save()
                 .then((result) => {
                   console.log(result);
-                  res.status(201).json({
-                    success: true,
-                    message: "Record Created Successfully",
-                    createdRecord: result,
+                  const userWalletDetails = new UserWallet({
+                    _id: new mongoose.Types.ObjectId(),
+                    userId: result._id,
+                    Amount: 0,
+                  });
+                  userWalletDetails.save().then((walletResult) => {
+                    res.status(201).json({
+                      success: true,
+                      message: "Record Created Successfully",
+                      createdRecord: result,
+                      createdWalletRecord: walletResult,
+                    });
                   });
                 })
                 .catch((error) => {
@@ -111,13 +123,9 @@ router
   })
   .patch((req, res) => {
     if (req.body.username !== null && req.body.email !== null) {
-      UserCredentials.findOne(
-        { username: req.body.username },
-        null,
-        {
-          limit: 1,
-        }
-      )
+      UserCredentials.findOne({ username: req.body.username }, null, {
+        limit: 1,
+      })
         .exec()
         .then((result) => {
           if (result === null) {
@@ -221,7 +229,15 @@ router.route("/authenticate").post((req, res) => {
             .compare(req.body.password, user.password)
             .then(function (result) {
               if (result === true) {
-                res.status(200).json({ success: true });
+                var tokenPayload = {
+                  username: req.body.username,
+                  password: req.body.password,
+                };
+                var token = jwt.sign(tokenPayload, privateKey, {
+                  algorithm: "RS256",
+                  expiresIn: 60 * 60,
+                });
+                res.status(200).json({ success: true, access_token: token });
               } else {
                 res.status(401).json({ message: "Unauthorized" });
               }
