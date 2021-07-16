@@ -33,7 +33,7 @@ $(function () {
     console.log(searchParams.get("amt"));
     console.log(searchParams.get("txnid"));
     if (searchParams.get("status") == "TXN_SUCCESS") {
-      fetch(instanceUrl + "/user_wallet/" + localStorage.getItem('userId'), {
+      fetch(instanceUrl + "/user_wallet/update-wallet" + localStorage.getItem('userId'), {
         method: "PATCH", // POST, PUT, DELETE, etc.
         headers: {
           "Content-Type": "application/json",
