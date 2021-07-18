@@ -99,8 +99,8 @@
                     <div class="card-body">
                         <h4 class="card-title" style="border-radius: 0px;">Wallet Balance</h4><strong style="color: var(--danger);font-size: 54px;margin-left: 20px;" id="walletBalance">₹0<br></strong>
                         <button class="btn btn-primary" type="button" style="margin-top: 6px;margin-right: 0px;margin-left: 16px;" data-toggle="modal" data-target="#addMoneyModal">Add Money</button>
-                        <button class="btn btn-primary" type="button" style="margin-left: 16px;margin-top: 6px;">Send Money</button>
-                        <button class="btn btn-primary" type="button" style="margin-left: 16px;margin-top: 6px;">Transfer To Bank</button>
+                        <button class="btn btn-primary" type="button" style="margin-left: 16px;margin-top: 6px;" data-toggle="modal" data-target="#sendMoneyModal">Send Money</button>
+                        <!--<button class="btn btn-primary" type="button" style="margin-left: 16px;margin-top: 6px;">Transfer To Bank</button>-->
                     </div>
                 </div>
             </div>
@@ -133,6 +133,34 @@
                     </div>   
                     <button type="button" id="modalCloseBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addMoneyBtn">Add Money To Wallet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="sendMoneyModal" tabindex="-1" role="dialog" aria-labelledby="addMoneyModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Send Money</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label for="sendAmount"><strong>Enter Amount</strong></label><br/>
+                    <input id="sendAmount" type="number" placeholder="0" name="sendAmount"><br/><br/>
+                    <label for="sendAddress"><strong>Enter Username/Email</strong></label><br/>
+                    <input id="sendAddress" type="text" name="sendAddress">
+                </div>
+                <div class="modal-footer">
+                    <!--Spinner-->
+                    <div class="spinner-border" role="status" id="spinner2" style='display:none'>
+                        <span class="sr-only">Loading...</span>
+                    </div>   
+                    <button type="button" id="modalCloseBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="sendMoneyBtn">Send Money</button>
                 </div>
             </div>
         </div>

@@ -77,6 +77,57 @@ $("#addMoneyBtn").click((evt) => {
   }
 });
 
+$("#sendMoneyBtn").click((evt) => {
+  evt.preventDefault();
+  let sessionUserId = localStorage.getItem("userId");
+  console.log(sessionUserId);
+  var sendMoneyBody = {
+    amount : parseFloat($("#sendAmount").val()),
+    recieverId : $("#sendAddress").val(),
+    senderId : sessionUserId
+  }
+  if (sessionUserId === null) {
+    location.href = "./404.html";
+  } else {
+    console.log($('#walletBalance').html().split('₹')[1].split('<br>')[0]);
+    console.log(parseFloat(sendMoneyBody.amount));
+    if(parseFloat($('#walletBalance').html().split('₹')[1].split('<br>')[0]) >= parseFloat(sendMoneyBody.amount)){
+      $('#spinner2').attr('style','');
+      fetch(instanceUrl + "/user_wallet/send", {
+        method: "PATCH", // POST, PUT, DELETE, etc.
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body : JSON.stringify(sendMoneyBody)
+      })
+        .then((response) => {
+          if (response.status == 200) {
+            response.json().then((data) => {
+              if(data.success === true){
+                alert('Money Sent Successfully!');
+                $('#sendMoneyModal').modal('hide');
+                updateWalletAmount();
+              }
+            });
+          }else if(response.status == 400){
+            response.json().then((data) => {
+              if(data.msg === 'User Not Found'){
+                alert('Sender Address Not Found!');
+                $('#sendMoneyModal').modal('hide');
+                updateWalletAmount();
+              }
+            });
+          }
+        })
+        .catch((err) => {});
+    }else{
+      alert('Balance Low!');
+      $('#sendMoneyModal').modal('hide');
+      updateWalletAmount();
+    }    
+  }
+});
+
 function logout() {
   localStorage.clear();
   location.href = "./index.html";
