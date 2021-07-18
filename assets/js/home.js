@@ -47,7 +47,6 @@ $("#addMoneyBtn").click((evt) => {
         if (response.status == 200) {
           response.json().then((data) => {
             var amt = parseFloat($("#amount").val()).toFixed(2);
-            console.log(amt.toFixed(2));
             var paymentBody = {
               amount: amt.toFixed(2),
               custId: data._id,
