@@ -46,7 +46,7 @@ $("#addMoneyBtn").click((evt) => {
       .then((response) => {
         if (response.status == 200) {
           response.json().then((data) => {
-            var amt = parseFloat($("#amount").val());
+            var amt = parseFloat($("#amount").val()).toFixed(2);
             console.log(amt.toFixed(2));
             var paymentBody = {
               amount: amt.toFixed(2),
@@ -82,7 +82,7 @@ $("#sendMoneyBtn").click((evt) => {
   let sessionUserId = localStorage.getItem("userId");
   console.log(sessionUserId);
   var sendMoneyBody = {
-    amount : parseFloat($("#sendAmount").val()),
+    amount : parseFloat($("#sendAmount").val()).toFixed(2),
     recieverId : $("#sendAddress").val(),
     senderId : sessionUserId
   }
@@ -90,8 +90,8 @@ $("#sendMoneyBtn").click((evt) => {
     location.href = "./404.html";
   } else {
     console.log($('#walletBalance').html().split('₹')[1].split('<br>')[0]);
-    console.log(parseFloat(sendMoneyBody.amount));
-    if(parseFloat($('#walletBalance').html().split('₹')[1].split('<br>')[0]) >= parseFloat(sendMoneyBody.amount)){
+    console.log(parseFloat(sendMoneyBody.amount).toFixed(2));
+    if(parseFloat($('#walletBalance').html().split('₹')[1].split('<br>')[0]).toFixed(2) >= parseFloat(sendMoneyBody.amount).toFixed(2)){
       $('#spinner2').attr('style','');
       fetch(instanceUrl + "/user_wallet/send", {
         method: "PATCH", // POST, PUT, DELETE, etc.
