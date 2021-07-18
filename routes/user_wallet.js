@@ -33,7 +33,7 @@ router.route("/update-wallet/:userId").patch((req, res) => {
     .then((result2) => {
         if(result2.lastTxnId != req.body.lastTxnId){
             var body = {
-                Amount: parseFloat(req.body.amount) + parseFloat(result2.Amount),
+                Amount: parseFloat(req.body.amount).toFixed(2) + parseFloat(result2.Amount).toFixed(2),
                 lastTxnId : req.body.lastTxnId
               };
             UserWallet.findOneAndUpdate(
@@ -88,7 +88,7 @@ router.route('/send').patch((req, res) => {
               res.status(400).json({ success : false, msg : 'User Not Found' });
             }else{
               var body = {
-                Amount : parseFloat(req.body.amount) + parseFloat(userWalletRecieverResult.Amount)
+                Amount : parseFloat(req.body.amount).toFixed(2) + parseFloat(userWalletRecieverResult.Amount).toFixed(2)
               }
               UserWallet.findOneAndUpdate(
                 {
@@ -112,7 +112,7 @@ router.route('/send').patch((req, res) => {
                       .exec()
                       .then((userWalletSenderResult) => {
                         body = {
-                          Amount : parseFloat(userWalletSenderResult.Amount) - parseFloat(req.body.amount) 
+                          Amount : parseFloat(userWalletSenderResult.Amount).toFixed(2) - parseFloat(req.body.amount).toFixed(2) 
                         }
                         UserWallet.findOneAndUpdate(
                           {
