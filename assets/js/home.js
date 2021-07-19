@@ -88,9 +88,10 @@ $("#sendMoneyBtn").click((evt) => {
   if (sessionUserId === null) {
     location.href = "./404.html";
   } else {
-    console.log($('#walletBalance').html().split('₹')[1].split('<br>')[0]);
+    console.log(parseFloat($('#walletBalance').html().split('₹')[1].split('<br>')[0]).toFixed(2));
     console.log(parseFloat(sendMoneyBody.amount).toFixed(2));
-    if(parseFloat($('#walletBalance').html().split('₹')[1].split('<br>')[0]).toFixed(2) >= parseFloat(sendMoneyBody.amount).toFixed(2)){
+    console.log(parseFloat($('#walletBalance').html().split('₹')[1].split('<br>')[0]) >= parseFloat(sendMoneyBody.amount));
+    if(parseFloat($('#walletBalance').html().split('₹')[1].split('<br>')[0]) >= (sendMoneyBody.amount)){
       $('#spinner2').attr('style','');
       fetch(instanceUrl + "/user_wallet/send", {
         method: "PATCH", // POST, PUT, DELETE, etc.
@@ -105,6 +106,9 @@ $("#sendMoneyBtn").click((evt) => {
               if(data.success === true){
                 alert('Money Sent Successfully!');
                 $('#sendMoneyModal').modal('hide');
+                $("#sendAddress").val('');
+                $("#sendAmount").val('');
+                $('#spinner2').attr('style','display:none');
                 updateWalletAmount();
               }
             });
@@ -113,6 +117,16 @@ $("#sendMoneyBtn").click((evt) => {
               if(data.msg === 'User Not Found'){
                 alert('Sender Address Not Found!');
                 $('#sendMoneyModal').modal('hide');
+                $("#sendAddress").val('');
+                $("#sendAmount").val('');
+                $('#spinner2').attr('style','display:none');
+                updateWalletAmount();
+              }else{
+                alert(data.msg);
+                $('#sendMoneyModal').modal('hide');
+                $("#sendAddress").val('');
+                $("#sendAmount").val('');
+                $('#spinner2').attr('style','display:none');
                 updateWalletAmount();
               }
             });
