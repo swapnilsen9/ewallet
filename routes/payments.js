@@ -19,7 +19,7 @@ router.route("/initiate").post((req, res) => {
     mid: mid,
     websiteName: "WEBSTAGING",
     orderId: "PYTM_" + Math.floor(Date.now() / 1000),
-    callbackUrl: "https://676e5d0fd329.ngrok.io/payments/payment_webhook",
+    callbackUrl: "https://e-wallet-testing.herokuapp.com/payments/payment_webhook",
     txnAmount: {
       value: req.body.amount,
       currency: "INR",
