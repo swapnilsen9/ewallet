@@ -20,7 +20,7 @@ router.use(express.json());
 router
   .route("/")
   .get((req, res) => {
-    const auth = {login: 'e-wallet-admin', password: 'b4?9*TGLZ`x>fh\('} // change this
+    const auth = {login: 'e-wallet-admin', password: 'b4?9*TGLZ`x>fh'} // change this
 
   // parse login and password from headers
   const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
